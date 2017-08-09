@@ -5,7 +5,7 @@ fermions installation for win with kinect1
 9/8/2017
 
 
-requirement:
+requirements:
 
 visual studio community 2015
 
