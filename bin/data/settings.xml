@@ -1,7 +1,7 @@
 <settings>
 <group>
 		<skip_points>2</skip_points>
-		<farThreshold>200</farThreshold>
+		<farThreshold>130</farThreshold>
 		<show_input_>1</show_input_>
 		<mirror_X>1</mirror_X>
 		<mirror_Y>0</mirror_Y>
@@ -23,5 +23,8 @@
 		<camera_position_Z>400</camera_position_Z>
   	<erode>0</erode>
 		<dilate>0</dilate>
+	<cropLeft>0</cropLeft>
+		<cropRight>0</cropRight>
+		<showCrop>0</showCrop>
 	</group>
 </settings>
