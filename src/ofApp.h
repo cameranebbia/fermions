@@ -73,5 +73,13 @@ public:
     ofParameter<float> extrusion, pointScale, lineAlpha, colR, colB, colG, camPosZ,camPosX,camPosY; //colorExtrusion,
 
 	ofParameter<float> audioBackgroundVol, audioFermionsVol;
+
+	ofParameter<int> cropLeft, cropRight;
+	ofParameter<bool> showCrop;
+
+	int screenshotCount;
+
+	ofImage screenshot;
+
 };
 

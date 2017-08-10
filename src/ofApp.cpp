@@ -4,8 +4,10 @@
 void ofApp::setup() {
     
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	
-    showmouse=false;
+
+	screenshotCount = 0;
+
+	showmouse=false;
 	ofHideCursor();
 
     //GUI
@@ -16,7 +18,7 @@ void ofApp::setup() {
     ofxGuiSetDefaultHeight(20);
     
     gui.setup("CONTROLS");
-    gui.setPosition(20,ofGetWindowHeight()/2-50);
+    gui.setPosition(20,400);
 	farThreshold.set("farThreshold", 200, 0, 255);
 	erode.set("erode", 0, 0, 30);
 	dilate.set("dilate", 0, 0, 30);
@@ -44,17 +46,26 @@ void ofApp::setup() {
 	audioBackgroundVol.set("audioBackgroundVol", 1, 0, 4);
 	audioFermionsVol.set("audioFermionsVol", 1, 0, 4);
 
+	cropLeft.set("cropLeft", 0, -20, 960);
+	cropRight.set("cropRight", 0, -20, 960);
+	showCrop.set("showCrop", false);
 	
     
-    gui.add(skip);
    // gui.add(usekinectDepthRaw);
     gui.add(farThreshold);
 //    gui.add(useCamera);
     gui.add(showgrab);
     gui.add(mirrorX);
 	gui.add(mirrorY);
+
+	gui.add(cropLeft);
+	gui.add(cropRight);
+	gui.add(showCrop);
+	
 	gui.add(erode);
 	gui.add(dilate);
+
+	gui.add(skip); 
 	gui.add(audioBackgroundVol);
 	gui.add(audioFermionsVol);
     gui.add(extrusion);
@@ -125,6 +136,7 @@ void ofApp::setup() {
     
     gui.loadFromFile("settings.xml");
     
+	showCrop = false;
     glEnable(GL_POINT_SMOOTH); // use circular points instead of square points
 
 
@@ -154,7 +166,7 @@ void ofApp::update() {
 
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two threshold
-		grayImage.threshold(farThreshold);
+		grayImage.threshold(255-farThreshold);
                 
         grayImage.mirror(mirrorY,mirrorX);
 
@@ -271,7 +283,17 @@ void ofApp::draw() {
     cam.end();
     ofDisableDepthTest();
 
-    
+	ofSetColor(0,255);
+	if (showCrop)
+		ofSetColor(255, 0, 0, 255);
+
+	ofDrawRectangle(-2, 0, cropLeft, 1200);
+
+	ofDrawRectangle(1922, 0, -cropRight, 1200);
+	
+
+
+	ofSetColor(255, 255);
 
     if(showGui) {
 
@@ -334,6 +356,11 @@ void ofApp::keyPressed(int key){
 		showGui = !showGui;
     }
     
+	if (key == 'x') {
+		screenshot.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+		screenshot.save("screenshot"+ofToString(screenshotCount)+".jpg");
+		screenshotCount++;
+	}
    
     
     if(key == 's') {
